@@ -1,20 +1,31 @@
+
 package com.universidad.refactoringu11.inventario;
 
-import com.universidad.refactoringu11.reportes.ReporteBajoStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class InventarioService {
-    private ReporteBajoStockService reporteBajoStockService;
 
     private final List<Producto> productos = new ArrayList<>();
     private final List<String> movimientos = new ArrayList<>();
 
+    private NotificadorBajoStock notificador;
+
     public void agregarProducto(Producto producto) {
         productos.add(producto);
+    }
+
+    public List<Producto> obtenerProductosBajoStock() {
+
+        return productos.stream()
+                .filter(producto ->
+                        producto.getStock() < producto.getStockMinimo()
+                )
+                .toList();
     }
 
     public String actualizarInventario(
@@ -113,9 +124,9 @@ public class InventarioService {
 
         if (necesitaReorden) {
 
-            if (reporteBajoStockService != null) {
-                System.out.println(
-                        reporteBajoStockService.generarReporte()
+            if (notificador != null) {
+                notificador.notificar(
+                        producto, cantidadReorden
                 );
             }
 
@@ -170,9 +181,10 @@ public class InventarioService {
     }
 
     @Autowired(required = false)
-    public void setReporteBajoStockService(
-            ReporteBajoStockService reporteBajoStockService
+    public void setNotificador(
+            NotificadorBajoStock notificador
     ) {
-        this.reporteBajoStockService = reporteBajoStockService;
+
+        this.notificador = notificador;
     }
 }
