@@ -143,4 +143,49 @@ Las pruebas automatizadas desempeñan un papel fundamental durante este proceso,
 Finalmente, los resultados obtenidos muestran una ejecución satisfactoria de las 15 pruebas implementadas, con cero fallos, errores y pruebas omitidas. Esto constituye una evidencia de validación de la Parte 1 del laboratorio.
 
 ---
+### Parte 2
+
+Durante la segunda parte del laboratorio se ejecutaron las pruebas automatizadas utilizando Maven, con el propósito de verificar la integración del módulo de reportes y comprobar las condiciones arquitectónicas establecidas en el proyecto.
+
+Para realizar la validación se utilizó el siguiente comando:
+
+```bash
+mvn test
+```
+
+### Resultado obtenido
+
+Durante la ejecución, Maven reportó un error en la fase de pruebas:
+
+```text
+[ERROR] Failed to execute goal
+org.apache.maven.plugins:maven-surefire-plugin:3.5.3:test
+(default-test) on project refactoring-u11:
+There are test failures.
+```
+
+El mensaje indica que una o más pruebas no finalizaron satisfactoriamente. Maven señala que los informes individuales se encuentran en:
+
+```text
+target/surefire-reports
+```
+
+### Análisis del resultado
+
+La ejecución permitió identificar que existe un problema pendiente de revisión en las pruebas automatizadas de la segunda parte.
+
+Sin embargo, el mensaje general de Maven no especifica cuál prueba falló ni cuál fue la causa del problema. Por esta razón, es necesario revisar los informes individuales generados por Surefire para identificar la clase de prueba afectada, el error presentado y su posible relación con la integración del módulo de reportes o las reglas arquitectónicas.
+
+### Estado de validación
+
+- Integración del módulo de reportes: implementada, pendiente de validación completa.
+- Dependencias entre paquetes: pendientes de comprobar mediante las pruebas arquitectónicas.
+- Pruebas automatizadas: ejecución realizada con resultado fallido.
+- Corrección de errores: pendiente de identificar la causa mediante los informes de Surefire.
+
+Este resultado permite reconocer la importancia de ejecutar las pruebas después de cada modificación, ya que no basta con incorporar nuevos componentes: también es necesario comprobar que su integración conserve el funcionamiento esperado del sistema.
+
+### Evidencia
+
+los informes generados en `target/surefire-reports` para documentar el proceso de diagnóstico.
 
